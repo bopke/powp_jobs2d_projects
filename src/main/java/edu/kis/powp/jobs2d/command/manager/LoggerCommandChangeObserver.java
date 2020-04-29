@@ -8,15 +8,15 @@ import edu.kis.powp.observer.Subscriber;
 
 public class LoggerCommandChangeObserver implements Subscriber {
 
-	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	public void update() {
-		DriverCommand command = CommandsFeature.getDriverCommandManager().getCurrentCommand();
-		logger.info("Current command set to: " + command.toString());
-	}
+    public void update() {
+        DriverCommand command = CommandsFeature.getDriverCommandManager().getCurrentCommand();
+        logger.info("Current command set to: " + command.toString());
+    }
 
-	public String toString() {
-		return "Logger Command Change Observer";
-	}
+    public String toString() {
+        return "Logger Command Change Observer";
+    }
 
 }

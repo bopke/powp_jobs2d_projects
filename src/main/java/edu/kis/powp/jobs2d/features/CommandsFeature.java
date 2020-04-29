@@ -5,21 +5,21 @@ import edu.kis.powp.jobs2d.command.manager.LoggerCommandChangeObserver;
 
 public class CommandsFeature {
 
-	private static DriverCommandManager commandManager;
+    private static DriverCommandManager commandManager;
 
-	public static void setupCommandManager() {
-		commandManager = new DriverCommandManager();
+    public static void setupCommandManager() {
+        commandManager = new DriverCommandManager();
 
-		LoggerCommandChangeObserver loggerObserver = new LoggerCommandChangeObserver();
-		commandManager.getChangePublisher().addSubscriber(loggerObserver);
-	}
+        LoggerCommandChangeObserver loggerObserver = new LoggerCommandChangeObserver();
+        commandManager.getChangePublisher().addSubscriber(loggerObserver);
+    }
 
-	/**
-	 * Get manager of application driver command.
-	 * 
-	 * @return plotterCommandManager.
-	 */
-	public static DriverCommandManager getDriverCommandManager() {
-		return commandManager;
-	}
+    /**
+     * Get manager of application driver command.
+     *
+     * @return plotterCommandManager.
+     */
+    public static DriverCommandManager getDriverCommandManager() {
+        return commandManager;
+    }
 }

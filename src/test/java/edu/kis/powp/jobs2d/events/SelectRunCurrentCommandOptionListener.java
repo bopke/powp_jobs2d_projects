@@ -9,15 +9,15 @@ import edu.kis.powp.jobs2d.features.CommandsFeature;
 
 public class SelectRunCurrentCommandOptionListener implements ActionListener {
 
-	private DriverManager driverManager;
+    private DriverManager driverManager;
 
-	public SelectRunCurrentCommandOptionListener(DriverManager driverManager) {
-		this.driverManager = driverManager;
-	}
+    public SelectRunCurrentCommandOptionListener(DriverManager driverManager) {
+        this.driverManager = driverManager;
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		DriverCommand command = CommandsFeature.getDriverCommandManager().getCurrentCommand();
-		command.execute(driverManager.getCurrentDriver());
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        DriverCommand command = CommandsFeature.getDriverCommandManager().getCurrentCommand();
+        command.execute(driverManager.getCurrentDriver());
+    }
 }
