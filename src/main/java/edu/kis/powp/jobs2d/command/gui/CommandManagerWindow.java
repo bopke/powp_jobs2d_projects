@@ -4,6 +4,7 @@ import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -22,6 +23,9 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     private String observerListString;
     private JTextArea observerListField;
+
+    private List<Subscriber> observers;
+    private boolean isDeleted = false;
 
     /**
      *
@@ -64,17 +68,43 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.weighty = 1;
         content.add(btnClearCommand, c);
 
-        JButton btnClearObservers = new JButton("Delete observers");
-        btnClearObservers.addActionListener((ActionEvent e) -> this.deleteObservers());
+        JButton btnRunCommand = new JButton("Run command");
+        btnRunCommand.addActionListener((ActionEvent e) -> this.runCommand());
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridx = 0;
         c.weighty = 1;
-        content.add(btnClearObservers, c);
+        content.add(btnRunCommand, c);
+
+        JButton btnHandleObservers = new JButton("Delete observers");
+        btnHandleObservers.addActionListener((ActionEvent e) -> this.handleObservers(btnHandleObservers));
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridx = 0;
+        c.weighty = 1;
+        content.add(btnHandleObservers, c);
+    }
+
+    public void handleObservers(JButton button) {
+        if (this.isDeleted) {
+            this.resetObservers();
+            button.setText("Delete observers");
+        } else {
+            this.deleteObservers();
+            button.setText("Reset observers");
+        }
+
+        this.updateObserverListField();
+        this.isDeleted = !this.isDeleted;
     }
 
     private void clearCommand() {
         commandManager.clearCurrentCommand();
+        updateCurrentCommandField();
+    }
+
+    private void runCommand() {
+        commandManager.runCurrentCommand();
         updateCurrentCommandField();
     }
 
@@ -83,8 +113,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     }
 
     public void deleteObservers() {
+        this.observers = new ArrayList<>(this.commandManager.getChangePublisher().getSubscribers());
         commandManager.getChangePublisher().clearObservers();
-        this.updateObserverListField();
     }
 
     private void updateObserverListField() {
@@ -99,6 +129,21 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         observerListField.setText(observerListString);
     }
 
+    public void resetObservers() {
+        if (this.observers != null && this.observers.size() > 0) {
+            this.commandManager.getChangePublisher().clearObservers();
+            this.addObservers(this.observers);
+        }
+    }
+
+    private void addObservers(List<Subscriber> observers) {
+        if (observers != null) {
+            for (Subscriber observer : observers) {
+                this.commandManager.getChangePublisher().addSubscriber(observer);
+            }
+        }
+    }
+
     @Override
     public void HideIfVisibleAndShowIfHidden() {
         updateObserverListField();
@@ -108,5 +153,5 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
             this.setVisible(true);
         }
     }
-
+    
 }

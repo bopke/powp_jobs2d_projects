@@ -41,9 +41,22 @@ public class TestJobs2dApp {
      */
     private static void setupCommandTests(Application application) {
         application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
-
+        application.addTest("Test command", new SelectLoadTestCommand());
         application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
+
         application.addTest("test VisitorCommandPattern", new SelectVisitorTestListener());
+
+        application.addTest("Make a command deep copy", new CopyCommandListener());
+
+        application.addTest("Rotate: 36 degrees", new SelectCommandTransformationRotateOptionListener(36));
+        application.addTest("Rotate: -15 degrees", new SelectCommandTransformationRotateOptionListener(-15));
+
+        application.addTest("Scale: 2.5", new SelectCommandTransformationScaleOptionListener(2.5, 2.5));
+        application.addTest("Scale: 0.3", new SelectCommandTransformationScaleOptionListener(0.3, 0.3));
+        application.addTest("Scale: 1.2, 0.8", new SelectCommandTransformationScaleOptionListener(1.2, 0.8));
+
+        application.addTest("Flip: horizontal", new SelectCommandTransformationFlipOptionListener(true));
+        application.addTest("Flip: vertical", new SelectCommandTransformationFlipOptionListener(false));
     }
 
     /**
@@ -110,6 +123,7 @@ public class TestJobs2dApp {
                 setupCommandTests(app);
                 setupLogger(app);
                 setupWindows(app);
+                app.getFreePanel().addMouseListener(new MouseClickDrawListener(app.getFreePanel()));
 
                 app.setVisibility(true);
             }
